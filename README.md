@@ -1,6 +1,6 @@
 # Proyecto Titvo - Índice de Repositorios
 
-<img src="./images/logo.png" alt="Logo Titvo" height="40px">
+[![Logo Titvo](https://github.com/KaribuLab/titvo/blob/main/images/logo.png)](https://github.com/KaribuLab/titvo/blob/6ef9d22b770b40cd555cad07e0ff185a56ae0a20/images/logo.png)
 
 https://www.titvo.com
 
