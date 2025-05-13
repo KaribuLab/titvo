@@ -52,87 +52,95 @@ Puntos de entrada al sistema desde diferentes plataformas:
 ## Diagrama de Arquitectura
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#555555', 'secondaryColor': '#ffffff', 'tertiaryColor': '#ffffff' }}}%%
-graph TD
-    %% Definición de estilos con textos oscuros para visibilidad en modo claro/oscuro
-    classDef interfaces fill:#ffffff,stroke:#333,stroke-width:1px,color:#000000;
-    classDef dominio fill:#d4f4fa,stroke:#333,stroke-width:1px,color:#000000;
-    classDef seguridad fill:#d5f5d5,stroke:#333,stroke-width:1px,color:#000000;
-    classDef securityInternals fill:#bdeabd,stroke:#333,stroke-width:1px,color:#000000;
-    classDef infraestructura fill:#fae5d5,stroke:#333,stroke-width:1px,color:#000000;
-
-    %% Interfaces de Usuario
-    subgraph Interfaces["Interfaces de Usuario"]
-        CLI[fa:fa-terminal tli]
-        GH[fa:fa-github GitHub Action]
-        BB[fa:fa-git Bitbucket Pipeline]
-    end
-    class Interfaces interfaces;
-    class CLI interfaces;
-    class GH interfaces;
-    class BB interfaces;
-
+flowchart TD
+    %% Definimos los nodos con colores que funcionen en modo claro y oscuro
+    style CLI fill:#d4f4fa,stroke:#000000,stroke-width:2px,color:#000000
+    style GH fill:#d4f4fa,stroke:#000000,stroke-width:2px,color:#000000
+    style BB fill:#d4f4fa,stroke:#000000,stroke-width:2px,color:#000000
+    
+    style Auth fill:#d4f4fa,stroke:#000000,stroke-width:2px,color:#000000
+    style Trigger fill:#d4f4fa,stroke:#000000,stroke-width:2px,color:#000000
+    
+    style Scan fill:#d5f5d5,stroke:#000000,stroke-width:2px,color:#000000
+    
+    style AuthSetup fill:#fae5d5,stroke:#000000,stroke-width:2px,color:#000000
+    style Setup fill:#fae5d5,stroke:#000000,stroke-width:2px,color:#000000
+    style TaskTrigger fill:#fae5d5,stroke:#000000,stroke-width:2px,color:#000000
+    style TaskStatus fill:#fae5d5,stroke:#000000,stroke-width:2px,color:#000000
+    style TaskCliFiles fill:#fae5d5,stroke:#000000,stroke-width:2px,color:#000000
+    style ScanInfra fill:#fae5d5,stroke:#000000,stroke-width:2px,color:#000000
+    
+    %% Interfaces
+    CLI["tli (CLI)"]
+    GH["GitHub Action"]
+    BB["Bitbucket Pipeline"]
+    
     %% Módulos de Dominio
-    subgraph Dominio["Módulos de Dominio (Node.js)"]
-        Auth[titvo-auth]
-        Trigger[titvo-trigger]
-    end
-    class Dominio dominio;
-    class Auth dominio;
-    class Trigger dominio;
-
-    %% Componente de Seguridad
-    subgraph Security["Componente de Seguridad"]
-        Scan[titvo-security-scan]
-        
-        subgraph ScanInternals["Clean Architecture Interna"]
-            Domain[Dominio]
-            UseCases[Casos de Uso]
-            API[API]
-            Adapters[Adaptadores]
-        end
-    end
-    class Security seguridad;
-    class Scan seguridad;
-    class ScanInternals securityInternals;
-    class Domain securityInternals;
-    class UseCases securityInternals;
-    class API securityInternals;
-    class Adapters securityInternals;
-
-    %% Infraestructura AWS
-    subgraph Infra["Infraestructura AWS"]
-        AuthSetup[titvo-auth-setup]
-        Setup[titvo-setup]
-        TaskTrigger[titvo-task-trigger]
-        TaskStatus[titvo-task-status]
-        TaskCliFiles[titvo-task-cli-files]
-        ScanInfra[titvo-security-scan-infra-aws]
-    end
-    class Infra infraestructura;
-    class AuthSetup infraestructura;
-    class Setup infraestructura;
-    class TaskTrigger infraestructura;
-    class TaskStatus infraestructura;
-    class TaskCliFiles infraestructura;
-    class ScanInfra infraestructura;
-
-    %% Conexiones
-    CLI --> Auth
-    CLI --> Scan
-    GH --> Scan
-    BB --> Scan
+    Auth["titvo-auth"]
+    Trigger["titvo-trigger"]
     
-    Auth --> AuthSetup
-    Trigger --> TaskTrigger
-    Trigger --> TaskStatus
+    %% Seguridad
+    Scan["titvo-security-scan"]
     
-    Scan --> ScanInfra
+    %% Infraestructura
+    AuthSetup["titvo-auth-setup"]
+    Setup["titvo-setup"]
+    TaskTrigger["titvo-task-trigger"]
+    TaskStatus["titvo-task-status"]
+    TaskCliFiles["titvo-task-cli-files"]
+    ScanInfra["titvo-security-scan-infra-aws"]
     
-    Domain --> UseCases
-    UseCases --> API
-    UseCases --> Adapters
-    Adapters --> ScanInfra
+    %% Conexiones con color rojo brillante para alta visibilidad
+    CLI -- "utiliza" --> Auth
+    CLI -- "escanea" --> Scan
+    GH -- "usa" --> Scan
+    BB -- "usa" --> Scan
+    
+    Auth -- "implementado en" --> AuthSetup
+    Trigger -- "implementado en" --> TaskTrigger
+    Trigger -- "implementado en" --> TaskStatus
+    
+    Scan -- "implementado en" --> ScanInfra
+    
+    %% Etiquetas para los grupos
+    subgraph Interfaces[" Interfaces de Usuario "]
+        CLI
+        GH
+        BB
+    end
+    
+    subgraph Domain[" Módulos de Dominio (Node.js) "]
+        Auth
+        Trigger
+    end
+    
+    subgraph Security[" Componente de Seguridad "]
+        Scan
+    end
+    
+    subgraph Infra[" Infraestructura AWS "]
+        AuthSetup
+        Setup
+        TaskTrigger
+        TaskStatus
+        TaskCliFiles
+        ScanInfra
+    end
+    
+    style Interfaces fill:#d4f4fa,stroke:#000000,stroke-width:3px,color:#000000
+    style Domain fill:#d4f4fa,stroke:#000000,stroke-width:3px,color:#000000
+    style Security fill:#d5f5d5,stroke:#000000,stroke-width:3px,color:#000000
+    style Infra fill:#fae5d5,stroke:#000000,stroke-width:3px,color:#000000
+    
+    %% Estilo de enlaces con color rojo para alta visibilidad
+    linkStyle 0 stroke:#FF0000,stroke-width:2px;
+    linkStyle 1 stroke:#FF0000,stroke-width:2px;
+    linkStyle 2 stroke:#FF0000,stroke-width:2px;
+    linkStyle 3 stroke:#FF0000,stroke-width:2px;
+    linkStyle 4 stroke:#FF0000,stroke-width:2px;
+    linkStyle 5 stroke:#FF0000,stroke-width:2px;
+    linkStyle 6 stroke:#FF0000,stroke-width:2px;
+    linkStyle 7 stroke:#FF0000,stroke-width:2px;
 ```
 
 ## Uso de la Herramienta CLI (tli)
