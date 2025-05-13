@@ -1,6 +1,6 @@
 # Proyecto Titvo - Índice de Repositorios
 
-<img src="images/logo.png" alt="Logo Titvo" height="40px">
+<img src="./images/logo.png" alt="Logo Titvo" height="40px">
 
 https://www.titvo.com
 
