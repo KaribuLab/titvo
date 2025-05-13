@@ -1,4 +1,7 @@
 # Proyecto Titvo - Índice de Repositorios
+
+<img src="logo.png" alt="Logo Titvo" height="40px">
+
 https://www.titvo.com
 
 Proyecto Open Source que contiene un sistema que analiza automáticamente commits de GitHub, Bitbucket o archivos enviados por CLI en busca de vulnerabilidades de seguridad utilizando modelos avanzados de LLM.
