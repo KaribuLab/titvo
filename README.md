@@ -11,7 +11,7 @@ Titvo está construido siguiendo principios de arquitectura limpia, con diferent
 
 ## Componentes del Sistema
 
-### Módulos de Dominio (Node.js)
+### Módulos de Dominio
 
 Repositorios que contienen la lógica de negocio pura siguiendo principios de Clean Architecture:
 
@@ -19,6 +19,7 @@ Repositorios que contienen la lógica de negocio pura siguiendo principios de Cl
 |-------------|-------------|
 | [titvo-auth](https://github.com/KaribuLab/titvo-auth) | Lógica de dominio del servicio de autenticación |
 | [titvo-trigger](https://github.com/KaribuLab/titvo-trigger) | Lógica de dominio para iniciar procesos de análisis |
+| [titvo-shared](https://github.com/KaribuLab/titvo-shared) | Biblioteca compartida con servicios comunes y utilidades reutilizables |
 
 ### Implementaciones de Infraestructura (AWS)
 
@@ -27,7 +28,6 @@ Repositorios que implementan la infraestructura específica acoplada a AWS:
 | Repositorio | Descripción |
 |-------------|-------------|
 | [titvo-auth-setup](https://github.com/KaribuLab/titvo-auth-setup) | Infraestructura AWS para el servicio de autenticación |
-| [titvo-setup](https://github.com/KaribuLab/titvo-setup) | Infraestructura AWS para configuración general |
 | [titvo-task-cli-files](https://github.com/KaribuLab/titvo-task-cli-files) | Infraestructura AWS para archivos CLI |
 | [titvo-task-trigger](https://github.com/KaribuLab/titvo-task-trigger) | Infraestructura AWS para disparadores específicos de tareas |
 | [titvo-task-status](https://github.com/KaribuLab/titvo-task-status) | Infraestructura AWS para seguimiento del estado de tareas |
@@ -60,11 +60,11 @@ flowchart TD
     
     style Auth fill:#d4f4fa,stroke:#000000,stroke-width:2px,color:#000000
     style Trigger fill:#d4f4fa,stroke:#000000,stroke-width:2px,color:#000000
+    style Shared fill:#d4f4fa,stroke:#000000,stroke-width:2px,color:#000000
     
     style Scan fill:#d5f5d5,stroke:#000000,stroke-width:2px,color:#000000
     
     style AuthSetup fill:#fae5d5,stroke:#000000,stroke-width:2px,color:#000000
-    style Setup fill:#fae5d5,stroke:#000000,stroke-width:2px,color:#000000
     style TaskTrigger fill:#fae5d5,stroke:#000000,stroke-width:2px,color:#000000
     style TaskStatus fill:#fae5d5,stroke:#000000,stroke-width:2px,color:#000000
     style TaskCliFiles fill:#fae5d5,stroke:#000000,stroke-width:2px,color:#000000
@@ -78,13 +78,13 @@ flowchart TD
     %% Módulos de Dominio
     Auth["titvo-auth"]
     Trigger["titvo-trigger"]
+    Shared["titvo-shared"]
     
     %% Seguridad
     Scan["titvo-security-scan"]
     
     %% Infraestructura
     AuthSetup["titvo-auth-setup"]
-    Setup["titvo-setup"]
     TaskTrigger["titvo-task-trigger"]
     TaskStatus["titvo-task-status"]
     TaskCliFiles["titvo-task-cli-files"]
@@ -102,6 +102,11 @@ flowchart TD
     
     Scan -- "implementado en" --> ScanInfra
     
+    %% Conexiones con titvo-shared
+    Auth -- "utiliza" --> Shared
+    Trigger -- "utiliza" --> Shared
+    Scan -- "utiliza" --> Shared
+    
     %% Etiquetas para los grupos
     subgraph Interfaces[" Interfaces de Usuario "]
         CLI
@@ -109,9 +114,10 @@ flowchart TD
         BB
     end
     
-    subgraph Domain[" Módulos de Dominio (Node.js) "]
+    subgraph Domain[" Módulos de Dominio "]
         Auth
         Trigger
+        Shared
     end
     
     subgraph Security[" Componente de Seguridad "]
@@ -120,7 +126,6 @@ flowchart TD
     
     subgraph Infra[" Infraestructura AWS "]
         AuthSetup
-        Setup
         TaskTrigger
         TaskStatus
         TaskCliFiles
@@ -141,6 +146,9 @@ flowchart TD
     linkStyle 5 stroke:#FF0000,stroke-width:2px;
     linkStyle 6 stroke:#FF0000,stroke-width:2px;
     linkStyle 7 stroke:#FF0000,stroke-width:2px;
+    linkStyle 8 stroke:#FF0000,stroke-width:2px;
+    linkStyle 9 stroke:#FF0000,stroke-width:2px;
+    linkStyle 10 stroke:#FF0000,stroke-width:2px;
 ```
 
 ## Uso de la Herramienta CLI (tli)
