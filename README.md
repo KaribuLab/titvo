@@ -1,4 +1,7 @@
 # Proyecto Titvo - Índice de Repositorios
+https://www.titvo.com
+
+Proyecto Open Source que contiene un sistema que analiza automáticamente commits de GitHub, Bitbucket o archivos enviados por CLI en busca de vulnerabilidades de seguridad utilizando modelos avanzados de LLM.
 
 Este repositorio sirve como punto de entrada para navegar por los diferentes componentes del ecosistema Titvo.
 
@@ -64,11 +67,3 @@ Para contribuir a cualquiera de los proyectos:
 ## Licencia
 
 Los proyectos Titvo se distribuyen bajo la licencia Apache 2.0. Consulta el archivo `LICENSE` en cada repositorio para más detalles.
-
-```
-                                 Apache License
-                           Version 2.0, January 2004
-                        http://www.apache.org/licenses/
-```
-
-Para más información sobre la licencia Apache 2.0, visita [apache.org/licenses/LICENSE-2.0](https://www.apache.org/licenses/LICENSE-2.0).
