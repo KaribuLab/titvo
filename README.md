@@ -52,13 +52,14 @@ Puntos de entrada al sistema desde diferentes plataformas:
 ## Diagrama de Arquitectura
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#555555', 'secondaryColor': '#ffffff', 'tertiaryColor': '#ffffff' }}}%%
 graph TD
-    %% Definición de estilos
-    classDef interfaces fill:#f9f9f9,stroke:#333,stroke-width:1px;
-    classDef dominio fill:#d4f4fa,stroke:#333,stroke-width:1px;
-    classDef seguridad fill:#d5f5d5,stroke:#333,stroke-width:1px;
-    classDef securityInternals fill:#bdeabd,stroke:#333,stroke-width:1px;
-    classDef infraestructura fill:#fae5d5,stroke:#333,stroke-width:1px;
+    %% Definición de estilos con textos oscuros para visibilidad en modo claro/oscuro
+    classDef interfaces fill:#ffffff,stroke:#333,stroke-width:1px,color:#000000;
+    classDef dominio fill:#d4f4fa,stroke:#333,stroke-width:1px,color:#000000;
+    classDef seguridad fill:#d5f5d5,stroke:#333,stroke-width:1px,color:#000000;
+    classDef securityInternals fill:#bdeabd,stroke:#333,stroke-width:1px,color:#000000;
+    classDef infraestructura fill:#fae5d5,stroke:#333,stroke-width:1px,color:#000000;
 
     %% Interfaces de Usuario
     subgraph Interfaces["Interfaces de Usuario"]
