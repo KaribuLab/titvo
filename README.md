@@ -4,6 +4,12 @@ Este repositorio sirve como punto de entrada para navegar por los diferentes com
 
 ## Componentes Principales
 
+### Herramientas de Línea de Comandos
+
+| Repositorio | Descripción |
+|-------------|-------------|
+| [tli](https://github.com/KaribuLab/tli) | CLI de seguridad para desarrollo que permite escanear código en busca de problemas de seguridad |
+
 ### Seguridad y Escaneo
 
 | Repositorio | Descripción |
@@ -34,9 +40,16 @@ Este repositorio sirve como punto de entrada para navegar por los diferentes com
 
 La arquitectura de Titvo está dividida en los siguientes componentes principales:
 
-1. **Seguridad**: Herramientas para análisis y escaneo de seguridad
-2. **Autenticación**: Servicios para manejo de identidad y acceso
-3. **Gestión de Tareas**: Componentes para la ejecución y seguimiento de procesos
+1. **Herramientas CLI**: Interfaces de línea de comandos para interactuar con el sistema
+2. **Seguridad**: Herramientas para análisis y escaneo de seguridad
+3. **Autenticación**: Servicios para manejo de identidad y acceso
+4. **Gestión de Tareas**: Componentes para la ejecución y seguimiento de procesos
+
+## Uso de la Herramienta CLI (tli)
+
+[tli](https://github.com/KaribuLab/tli) es una herramienta de línea de comandos para escanear código fuente en busca de problemas de seguridad:
+
+Para más detalles sobre el uso y funcionalidades de tli, consulta el [repositorio oficial](https://github.com/KaribuLab/tli).
 
 ## Contribuciones
 
@@ -51,3 +64,11 @@ Para contribuir a cualquiera de los proyectos:
 ## Licencia
 
 Los proyectos Titvo se distribuyen bajo la licencia Apache 2.0. Consulta el archivo `LICENSE` en cada repositorio para más detalles.
+
+```
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+```
+
+Para más información sobre la licencia Apache 2.0, visita [apache.org/licenses/LICENSE-2.0](https://www.apache.org/licenses/LICENSE-2.0).
