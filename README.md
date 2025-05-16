@@ -160,6 +160,12 @@ flowchart TD
 
 Para más detalles sobre el uso y funcionalidades de tli, consulta el [repositorio oficial](https://github.com/KaribuLab/tli).
 
+## Configuración básica Titvo
+
+Titvo utiliza algunas configuraciones que se encuentran en la tabla de configuración. En algunos casos es necesario encriptar los valores de esta tabla para evitar que sean expuestos accidentalmente.
+
+Para encriptar y desencriptar mensajes utilizando AES, puedes utilizar la herramienta [karibu-aes-encrypt](https://github.com/KaribuLab/karibu-aes-encrypt).
+
 ## Contribuciones
 
 Para contribuir a cualquiera de los proyectos:
