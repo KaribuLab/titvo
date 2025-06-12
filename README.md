@@ -21,7 +21,7 @@ Repositorios que contienen la lógica de negocio pura siguiendo principios de Cl
 | Repositorio | Descripción |
 |-------------|-------------|
 | [titvo-auth](https://github.com/KaribuLab/titvo-auth) | Lógica de dominio del servicio de autenticación |
-| [titvo-trigger](https://github.com/KaribuLab/titvo-trigger) | Lógica de dominio para iniciar procesos de análisis |
+| [titvo-trigger]([https://github.com/KaribuLab/titvo-trigger]) | Lógica de dominio para iniciar procesos de análisis |
 | [titvo-shared](https://github.com/KaribuLab/titvo-shared) | Biblioteca compartida con servicios comunes y utilidades reutilizables |
 
 ### Implementaciones de Infraestructura (AWS)
@@ -30,10 +30,10 @@ Repositorios que implementan la infraestructura específica acoplada a AWS:
 
 | Repositorio | Descripción |
 |-------------|-------------|
-| [titvo-auth-setup](https://github.com/KaribuLab/titvo-auth-setup) | Infraestructura AWS para el servicio de autenticación |
-| [titvo-task-cli-files](https://github.com/KaribuLab/titvo-task-cli-files) | Infraestructura AWS para archivos CLI |
-| [titvo-task-trigger](https://github.com/KaribuLab/titvo-task-trigger) | Infraestructura AWS para disparadores específicos de tareas |
-| [titvo-task-status](https://github.com/KaribuLab/titvo-task-status) | Infraestructura AWS para seguimiento del estado de tareas |
+| [titvo-auth-setup](https://github.com/KaribuLab/titvo-auth-setup-aws) | Infraestructura AWS para el servicio de autenticación |
+| [titvo-task-cli-files](https://github.com/KaribuLab/titvo-task-cli-files-aws) | Infraestructura AWS para archivos CLI |
+| [titvo-task-trigger](https://github.com/KaribuLab/titvo-task-trigger-aws) | Infraestructura AWS para disparadores específicos de tareas |
+| [titvo-task-status](https://github.com/KaribuLab/titvo-task-status-aws) | Infraestructura AWS para seguimiento del estado de tareas |
 | [titvo-security-scan-infra-aws](https://github.com/KaribuLab/titvo-security-scan-infra-aws) | Infraestructura AWS para el motor de escaneo |
 
 ### Componente de Seguridad
