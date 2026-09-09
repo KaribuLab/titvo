@@ -4,7 +4,7 @@
 
 https://www.titvo.com
 
-Plataforma Open Source de DevSecOps que analiza automáticamente commits de GitHub y Bitbucket en busca de vulnerabilidades de seguridad, utilizando modelos avanzados de LLM con RAG y análisis contextual.
+Plataforma Open Source de DevSecOps que analiza automáticamente commits de GitHub y Bitbucket en busca de vulnerabilidades de seguridad, utilizando modelos de LLM configurables, herramientas MCP y RAG opcional para análisis contextual.
 
 > **Punto de entrada al ecosistema:** este repositorio navega todos los componentes. Para desplegar Titvo en tu cuenta AWS, usa el [**titvo-installer**](https://github.com/KaribuLab/titvo-installer).
 
@@ -25,6 +25,8 @@ flowchart LR
     subgraph Interfaces["🖥️  Interfaces de Usuario"]
         GHA(["GitHub\nAction"])
         BBP(["Bitbucket\nPipeline"])
+        AdminWeb(["titvo-admin-web"])
+        AdminBFF["titvo-admin-bff-aws"]
     end
 
     subgraph AuthGroup["🔐  Autenticación"]
@@ -36,12 +38,15 @@ flowchart LR
         GitFiles["titvo-git-commit-files-aws"]
         Trigger["titvo-task-trigger-aws"]
         Status["titvo-task-status-aws"]
+        Batch["AWS Batch"]
+        Tasks[("DynamoDB\nTareas")]
     end
 
     subgraph AIEngine["🤖  Motor de Análisis IA"]
         Agent{{"titvo-agent-aws"}}
         MCP{{"titvo-mcp-gateway"}}
         RAG{{"titvo-rag-indexer"}}
+        LLM{{"Proveedor LLM"}}
     end
 
     subgraph Reports["📊  Reportes"]
@@ -55,23 +60,29 @@ flowchart LR
         TriggerLib[("titvo-trigger")]
     end
 
-    GHA --> Auth
-    GHA --> GitFiles
-    BBP --> Auth
-    BBP --> GitFiles
+    GHA --> Trigger
+    BBP --> Trigger
+    AdminWeb --> AdminBFF
+    AdminBFF --> Auth
+    AdminBFF --> Trigger
 
-    Auth --> Trigger
+    Trigger -->|valida clave| Auth
     CLIFiles --> Trigger
-    GitFiles --> Trigger
 
-    Trigger --> Agent
+    Trigger -->|envía trabajo| Batch
+    Trigger --> Tasks
+    Batch --> Agent
     Agent <-->|tools| MCP
+    MCP -->|solicita archivos| GitFiles
+    Agent -->|inferencia| LLM
     Agent -->|index| RAG
-    Status -.->|consulta| Agent
+    Agent -->|actualiza| Tasks
+    Status -.->|consulta| Tasks
+    Status -.->|consulta trabajo| Batch
 
     Agent --> Report
-    Report --> GHIssue
-    Report --> BBInsights
+    Agent --> GHIssue
+    Agent --> BBInsights
 
     Shared -.-> Auth
     Shared -.-> Agent
@@ -91,6 +102,7 @@ Puntos de entrada al sistema desde diferentes plataformas:
 |-------------|-------------|
 | [titvo-security-scan-action](https://github.com/KaribuLab/titvo-security-scan-action) | GitHub Action para escaneos automáticos en PR/push |
 | [titvo-security-scan-pipe](https://bitbucket.org/karibu-cl/titvo-security-scan-pipe/src/main/) | Bitbucket Pipeline para escaneos de seguridad |
+| [titvo-admin-web](https://github.com/KaribuLab/titvo-admin-web) | Consola administrativa React/Vite para configuración, usuarios, claves de acceso y consulta de repositorios y escaneos. Sitio estático en S3/CloudFront. |
 
 ### Infraestructura Base (AWS)
 
@@ -103,19 +115,20 @@ Puntos de entrada al sistema desde diferentes plataformas:
 
 | Repositorio | Descripción |
 |-------------|-------------|
-| [titvo-agent-aws](https://github.com/KaribuLab/titvo-agent-aws) | Agente principal de análisis de seguridad. Orquesta el escaneo usando LLM + MCP + RAG. |
+| [titvo-agent-aws](https://github.com/KaribuLab/titvo-agent-aws) | Agente principal de análisis de seguridad en AWS Batch. Usa MCP, RAG opcional y un LLM configurable: OpenAI, OpenRouter, Anthropic o Google, con soporte de endpoints personalizados HTTPS. |
 | [titvo-mcp-gateway](https://github.com/KaribuLab/titvo-mcp-gateway) | Gateway MCP (Model Context Protocol) que expone herramientas al agente. |
-| [titvo-rag-indexer](https://github.com/KaribuLab/titvo-rag-indexer) | Indexador RAG: genera y mantiene embeddings del código para análisis contextual. |
+| [titvo-rag-indexer](https://github.com/KaribuLab/titvo-rag-indexer) | Indexador RAG: genera y mantiene embeddings del código para análisis contextual, con artefactos en S3 consumidos por el agente mediante SQLite. |
 
 ### Autenticación y Tareas (AWS Lambda)
 
 | Repositorio | Descripción |
 |-------------|-------------|
 | [titvo-auth-setup-aws](https://github.com/KaribuLab/titvo-auth-setup-aws) | Infraestructura AWS del servicio de autenticación |
+| [titvo-admin-bff-aws](https://github.com/KaribuLab/titvo-admin-bff-aws) | API de la consola administrativa: autenticación, configuración, usuarios, claves de acceso, consulta y lanzamiento de escaneos. |
 | [titvo-task-trigger-aws](https://github.com/KaribuLab/titvo-task-trigger-aws) | Recibe solicitudes e inicia los escaneos |
 | [titvo-task-status-aws](https://github.com/KaribuLab/titvo-task-status-aws) | Consulta del estado y resultado de tareas |
 | [titvo-task-cli-files-aws](https://github.com/KaribuLab/titvo-task-cli-files-aws) | Maneja archivos enviados desde la CLI |
-| [titvo-git-commit-files-aws](https://github.com/KaribuLab/titvo-git-commit-files-aws) | Obtiene archivos modificados en commits de Git para análisis |
+| [titvo-git-commit-files-aws](https://github.com/KaribuLab/titvo-git-commit-files-aws) | Obtiene archivos de GitHub y Bitbucket mediante Git sobre SSH, con clonación por rama y soporte de análisis por commit o completo |
 
 ### Reportes e Integraciones
 
